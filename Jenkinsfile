@@ -3,33 +3,38 @@ pipeline {
         docker {
             image 'node:18-alpine'
         }
-    stages{
+    }                                    // ← đóng agent
+
+    stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/nguyentuanduyntd/JenkinsDemo.git'                  
+                git 'https://github.com/nguyentuanduyntd/JenkinsDemo.git'
             }
         }
+
         stage('Install') {
             steps {
-                sh 'npm install'                  
+                dir('lab02_jenkins') {
+                    sh 'npm install'
+                }
             }
         }
-        stage('Build') {
-            steps {
-                sh 'npm run build'                  
-            }
-        }
+
         stage('Test') {
             steps {
-                sh 'npm test'
+                dir('lab02_jenkins') {
+                    sh 'node --test'
+                }
             }
-            }
+        }
+
         stage('Deploy') {
             steps {
                 sh 'echo "Deploying..."'
             }
         }
     }
+
     post {
         success {
             echo 'Pipeline succeeded!'
@@ -37,6 +42,5 @@ pipeline {
         failure {
             echo 'Pipeline failed!'
         }
-    }
     }
 }
