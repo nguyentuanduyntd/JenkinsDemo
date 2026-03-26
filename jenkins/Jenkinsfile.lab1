@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello, World!'
+            }
+        }
+
+        stage('Environment') {
+            steps {
+                sh 'printenv'
+            }
+        }
+
+        stage('Build Info') {
+            steps {
+                echo "Build Number: ${BUILD_NUMBER}"
+                echo "Job Name: ${JOB_NAME}"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Lab 1 succeeded!'
+        }
+        failure {
+            echo 'Lab 1 failed!'
+        }
+    }
+}
