@@ -3,35 +3,40 @@ pipeline {
         docker {
             image 'node:18-alpine'
         }
-        stages{
-            stage('Install') {
-                steps {
-                    sh 'npm install'                  
-                }
-            }
-            stage('Build') {
-                steps {
-                    sh 'npm run build'                  
-                }
-            }
-            stage('Test') {
-                steps {
-                    sh 'npm test'
-                }
-                }
-            stage('Deploy') {
-                steps {
-                    sh 'echo "Deploying..."'
-                }
+    stages{
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/nguyentuanduyntd/JenkinsDemo.git'                  
             }
         }
-        post {
-            success {
-                echo 'Pipeline succeeded!'
-            }
-            failure {
-                echo 'Pipeline failed!'
+        stage('Install') {
+            steps {
+                sh 'npm install'                  
             }
         }
+        stage('Build') {
+            steps {
+                sh 'npm run build'                  
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+            }
+        stage('Deploy') {
+            steps {
+                sh 'echo "Deploying..."'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
     }
 }
